@@ -69,6 +69,9 @@ typings/
 .nuxt
 .output
 
+# Nuxt generate
+dist
+
 # temp uploaded files
 server/upload
 
