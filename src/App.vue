@@ -9,28 +9,64 @@
   </div>
 
   <div>
-    Hi there! 14_10
+    Hi there! 14_57
   </div>
 </template>
 
 <script setup lang="ts">
-declare global {
-  interface Window {
-    OneSignalDeferred?: any[]
+import { useOneSignal } from '@onesignal/onesignal-vue3'
+import { onBeforeUnmount, onMounted } from 'vue';
+const OneSignal = useOneSignal()
+
+
+console.log("OneSignal obj", OneSignal)
+
+// 'trace', 'debug' 'info' 'warn' 'error'
+OneSignal.Debug.setLogLevel('info')
+
+
+// samples
+function permissionChangeListener(permission: any) {
+  console.log(`permission changed:`, permission);
+  if (permission) {
+    console.log(`permission accepted!`);
   }
 }
-// window.OneSignalDeferred = window.OneSignalDeferred || []
 
-// window.OneSignalDeferred.push((OneSignal: any) => {
-//   console.log('OneSignal', OneSignal)
-//   OneSignal.init({
-//     appId: "306a5c51-b630-4195-9fb8-71d0b22637ce",
-//     safari_web_id: "web.onesignal.auto.44e66786-7e94-4ade-8822-3a1650cda83f",
-//     notifyButton: {
-//       enable: true,
-//     }
-//   })
-// })
+function clickEventListener(event: any) {
+  console.log(`click event: ${event}`);
+}
+
+function notificationDismissedListener(event: any) {
+  console.log(`dismiss event: ${event}`);
+}
+
+async function checkPermissionStatus() {
+  // const permission = await OneSignal.Notifications.permission
+
+  // // debugger
+  // console.log('OneSignal.Notifications.permission', permission)
+  // if (permission) {
+  //   OneSignal.Notifications.requestPermission();
+  // } else {
+  //   window.alert('notifications disabled, please allow')
+  // }
+}
+
+
+onMounted(() => {
+  OneSignal.Notifications.addEventListener("permissionChange", permissionChangeListener);
+  OneSignal.Notifications.addEventListener("click", clickEventListener);
+  OneSignal.Notifications.addEventListener("dismiss", notificationDismissedListener);
+
+  checkPermissionStatus()
+})
+
+onBeforeUnmount(() => {
+  OneSignal.Notifications.removeEventListener("permissionChange", permissionChangeListener);
+  OneSignal.Notifications.removeEventListener("click", clickEventListener);
+  OneSignal.Notifications.removeEventListener("dismiss", notificationDismissedListener);
+})
 
 </script>
 
