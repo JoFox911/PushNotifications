@@ -19,18 +19,18 @@ declare global {
     OneSignalDeferred?: any[]
   }
 }
-window.OneSignalDeferred = window.OneSignalDeferred || []
+// window.OneSignalDeferred = window.OneSignalDeferred || []
 
-window.OneSignalDeferred.push((OneSignal: any) => {
-  console.log('OneSignal', OneSignal)
-  OneSignal.init({
-    appId: "306a5c51-b630-4195-9fb8-71d0b22637ce",
-    safari_web_id: "web.onesignal.auto.44e66786-7e94-4ade-8822-3a1650cda83f",
-    notifyButton: {
-      enable: true,
-    }
-  })
-})
+// window.OneSignalDeferred.push((OneSignal: any) => {
+//   console.log('OneSignal', OneSignal)
+//   OneSignal.init({
+//     appId: "306a5c51-b630-4195-9fb8-71d0b22637ce",
+//     safari_web_id: "web.onesignal.auto.44e66786-7e94-4ade-8822-3a1650cda83f",
+//     notifyButton: {
+//       enable: true,
+//     }
+//   })
+// })
 
 </script>
 
