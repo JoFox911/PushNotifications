@@ -26,17 +26,26 @@
 
       <span>is browser supports web push? {{ isSupported }} </span>
 
-      <span>is notifications permission prompted? {{ isPermissionPrompted }}</span>
+      <template v-if="isSupported">
 
-      <span>is subscribed? {{ isSubscribedToNotifications }}</span>
+        <span>is notifications permission prompted? {{ isPermissionPrompted }}</span>
 
-      <button v-if="isSubscribedToNotifications" @click="unsubscribe">
-        Unsubscribe
-      </button>
+        <button v-if="!isPermissionPrompted" @click="requestPermission">
+          Request permission
+        </button>
+      </template>
 
-      <button v-if="!isSubscribedToNotifications" @click="subscribe">
-        Subscribe
-      </button>
+      <template v-if="isSupported && isPermissionPrompted">
+        <span>is subscribed? {{ isSubscribedToNotifications }}</span>
+
+        <button v-if="isSubscribedToNotifications" @click="unsubscribe">
+          Unsubscribe
+        </button>
+
+        <button v-if="!isSubscribedToNotifications" @click="subscribe">
+          Subscribe
+        </button>
+      </template>
     </div>
   </div>
 </template>
@@ -89,6 +98,11 @@ async function subscribe() {
   checkNotificationsStatus()
 }
 
+async function requestPermission() {
+  await OneSignal.Notifications.requestPermission()
+  checkNotificationsStatus()
+}
+
 onMounted(() => {
   OneSignal.Notifications.addEventListener("permissionChange", permissionChangeListener)
   OneSignal.Notifications.addEventListener("click", clickEventListener)
@@ -133,4 +147,5 @@ onBeforeUnmount(() => {
   position: absolute;
   top: 16px;
   right: 16px;
-}</style>
+}
+</style>
